@@ -34,14 +34,19 @@ public class UaaSavedRequestAwareAuthenticationSuccessHandler extends SavedReque
 
     @Override
     public String determineTargetUrl(HttpServletRequest request, HttpServletResponse response) {
+        logger.debug("******** karun: determineTargetUrl: ");
         Object redirectAttribute = request.getAttribute(URI_OVERRIDE_ATTRIBUTE);
+        logger.debug("redirectAttribute: {}", redirectAttribute);
         String redirectFormParam = request.getParameter(FORM_REDIRECT_PARAMETER);
+        logger.debug("redirectFormParam: {}", redirectFormParam);
         if (redirectAttribute !=null) {
             logger.debug("Returning redirectAttribute saved URI:"+redirectAttribute);
             return (String) redirectAttribute;
         } else if (UaaUrlUtils.uriHasMatchingHost(redirectFormParam, request.getServerName())) {
+            logger.debug("Returning Form Param");
             return redirectFormParam;
         } else {
+            logger.debug("Falling through to superclass");
             return super.determineTargetUrl(request, response);
         }
     }
